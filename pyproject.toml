@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netbox-static-routes"
+version = "1.1.0"
+description = "Display static routes in NetBox"
+authors = [
+  { name = "Marlon Sieker", email = "Marlon.Sieker@tkrz.de" }
+]
+readme = "README.md"
+dependencies = []
+
+[tool.setuptools]
+packages = ["netbox_static_routes"]
+include-package-data = true
+zip-safe = false
