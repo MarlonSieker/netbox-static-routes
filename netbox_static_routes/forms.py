@@ -1,19 +1,28 @@
 from django import forms
-from ipam.models import Prefix, IPAddress
+from ipam.models import Prefix, IPAddress, Aggregate
 from dcim.models import Device
-from netbox.forms import NetBoxModelForm
+from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
 from .models import StaticRoute, Community
 from utilities.forms.fields import CommentField, DynamicModelChoiceField, DynamicModelMultipleChoiceField
-from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
+from utilities.forms.rendering import FieldSet, TabbedGroups
+from django.contrib.contenttypes.models import ContentType
 
 class StaticRouteForm(NetBoxModelForm):
     comments = CommentField()
 
     device = DynamicModelChoiceField(
-        queryset=Device.objects.all()
+        queryset=Device.objects.all(),
+        label='Device'
     )
     prefix = DynamicModelChoiceField(
-        queryset=Prefix.objects.all()
+        queryset=Prefix.objects.all(),
+        required=False,
+        label='Prefix'
+    )
+    aggregate = DynamicModelChoiceField(
+        queryset=Aggregate.objects.all(),
+        required=False,
+        label='Aggregate'
     )
     ip_address = DynamicModelChoiceField(
         queryset=IPAddress.objects.all(),
@@ -30,15 +39,36 @@ class StaticRouteForm(NetBoxModelForm):
         label='Communities'
     )
 
+    fieldsets = (
+        FieldSet('device', name='Static Route'),
+        FieldSet(
+            TabbedGroups(
+                FieldSet('prefix', name='Prefix'),
+                FieldSet('aggregate', name='Aggregate'),
+            ),
+            name='Network'
+        ),
+        FieldSet('ip_address', 'discard', name='Next Hop'),
+        FieldSet('communities', name='Communities'),
+        FieldSet('comments', 'tags', name='Extra'),
+    )
+
     class Meta:
         model = StaticRoute
-        fields = ('device', 'prefix', 'ip_address', 'discard', 'communities', 'comments', 'tags')
+        fields = ('device', 'prefix', 'aggregate', 'ip_address', 'discard', 'communities', 'comments', 'tags')
 
     def clean(self):
         super().clean()
 
+        prefix = self.cleaned_data.get('prefix')
+        aggregate = self.cleaned_data.get('aggregate')
         discard = self.cleaned_data.get('discard')
         ip_address = self.cleaned_data.get('ip_address')
+
+        if prefix and aggregate:
+            self.add_error('aggregate', 'Please choose either a Prefix OR an Aggregate, not both.')
+        if not prefix and not aggregate:
+            self.add_error('prefix', 'You must specify a Prefix or an Aggregate.')
 
         if discard and ip_address:
             self.add_error('ip_address', 'Cannot set both Next-Hop and Discard route.')
@@ -47,6 +77,11 @@ class StaticRouteForm(NetBoxModelForm):
 
         if discard:
             self.cleaned_data['ip_address'] = None
+
+        if prefix:
+            self.instance.target = prefix
+        elif aggregate:
+            self.instance.target = aggregate
 
 class StaticRouteFilterForm(NetBoxModelFilterSetForm):
     model = StaticRoute
@@ -58,6 +93,11 @@ class StaticRouteFilterForm(NetBoxModelFilterSetForm):
 
     prefix = forms.ModelMultipleChoiceField(
         queryset=Prefix.objects.all(),
+        required=False
+    )
+
+    aggregate = forms.ModelMultipleChoiceField(
+        queryset=Aggregate.objects.all(),
         required=False
     )
 

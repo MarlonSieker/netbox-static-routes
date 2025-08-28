@@ -12,7 +12,7 @@ class StaticRouteTable(NetBoxTable):
     )
 
     prefix = tables.Column(
-        linkify=True
+        accessor='target', linkify=True
     )
 
     ip_address = tables.Column(

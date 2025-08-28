@@ -12,8 +12,14 @@
               <td><a href="{{ object.device.get_absolute_url }}">{{ object.device }}</a></td>
             </tr>
             <tr>
-              <th scope="row">Prefix</th>
-              <td><a href="{{ object.prefix.get_absolute_url }}">{{ object.prefix }}</a></td>
+              <th scope="row">Prefix / Aggregate</th>
+              <td>
+                {% if object.target %}
+                  <a href="{{ object.target.get_absolute_url }}">{{ object.target }}</a>
+                {% else %}
+                  <span class="text-muted">None</span>
+                {% endif %}
+              </td>
             </tr>
             <tr>
               <th scope="row">Next-Hop</th>

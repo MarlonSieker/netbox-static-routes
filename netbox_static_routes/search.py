@@ -5,7 +5,7 @@ from .models import StaticRoute, Community
 class StaticRouteIndex(SearchIndex):
     model = StaticRoute
     fields = (
-        ('prefix', 200),
+        ('target', 200),
         ('comments', 5000),
     )
 
