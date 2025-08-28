@@ -4,7 +4,7 @@ class NetboxStaticRoutesConfig(PluginConfig):
     name = 'netbox_static_routes'
     verbose_name = 'Netbox Static Routes'
     description = 'Display static routes in Netbox'
-    version = '1.1.0'
+    version = '1.2.0'
     min_version = '4.3.0'
     base_url = 'static-routes'
     author = 'Marlon Sieker'
