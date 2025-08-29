@@ -6,6 +6,7 @@ urlpatterns = (
     #Static Routes
     path('static-routes/', views.StaticRouteListView.as_view(), name='staticroute_list'),
     path('static-routes/add/', views.StaticRouteEditView.as_view(), name='staticroute_add'),
+    path('static-routes/import/', views.StaticRouteImportView.as_view(), name='staticroute_import'),
     path('static-routes/<int:pk>/', views.StaticRouteView.as_view(), name='staticroute'),
     path('static-routes/<int:pk>/edit/', views.StaticRouteEditView.as_view(), name='staticroute_edit'),
     path('static-routes/<int:pk>/delete/', views.StaticRouteDeleteView.as_view(), name='staticroute_delete'),

@@ -1,5 +1,5 @@
 from netbox.views import generic
-from . import filtersets, forms, models, tables
+from . import filtersets, forms, models, tables, import_forms
 from utilities.views import ViewTab, register_model_view
 from dcim.models import Device
 from django.shortcuts import render, get_object_or_404
@@ -17,13 +17,17 @@ class StaticRouteListView(generic.ObjectListView):
     table = tables.StaticRouteTable
     filterset = filtersets.StaticRouteFilterSet
     filterset_form = forms.StaticRouteFilterForm
-    
+
 class StaticRouteEditView(generic.ObjectEditView):
     queryset = StaticRoute.objects.all()
     form = forms.StaticRouteForm
 
 class StaticRouteDeleteView(generic.ObjectDeleteView):
     queryset = models.StaticRoute.objects.all()
+
+class StaticRouteImportView(generic.BulkImportView):
+    queryset = models.StaticRoute.objects.all()
+    model_form = import_forms.StaticRouteImportForm
 
 @register_model_view(Device, name="static-routes", path="static-routes")
 class DeviceStaticRouteView(PermissionRequiredMixin, View):
@@ -60,7 +64,7 @@ class CommunityListView(generic.ObjectListView):
     table = tables.CommunityTable
     filterset = filtersets.CommunityFilterSet
     filterset_form = forms.CommunityFilterForm
-    
+
 class CommunityEditView(generic.ObjectEditView):
     queryset = Community.objects.all()
     form = forms.CommunityForm

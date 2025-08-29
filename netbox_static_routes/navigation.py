@@ -5,6 +5,11 @@ staticroute_buttons = [
         link='plugins:netbox_static_routes:staticroute_add',
         title='Add',
         icon_class='mdi mdi-plus-thick',
+    ),
+    PluginMenuButton(
+        link='plugins:netbox_static_routes:staticroute_import',
+        title='Import',
+        icon_class='mdi mdi-upload',
     )
 ]
 
