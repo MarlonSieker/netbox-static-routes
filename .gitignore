@@ -1,5 +1,4 @@
 netbox_static_routes_communities.egg-info/
 __pycache__/
-migrations/
 build/
 dist/
