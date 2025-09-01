@@ -50,7 +50,6 @@ class StaticRouteForm(NetBoxModelForm):
         ),
         FieldSet('ip_address', 'discard', name='Next Hop'),
         FieldSet('communities', name='Communities'),
-        FieldSet('comments', 'tags', name='Extra'),
     )
 
     class Meta:
