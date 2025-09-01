@@ -1,7 +1,7 @@
 from netbox.plugins import PluginConfig
 
 class NetboxStaticRoutesConfig(PluginConfig):
-    name = 'netbox_static_routes'
+    name = 'netbox_static_routes_communities'
     verbose_name = 'Netbox Static Routes'
     description = 'Display static routes in Netbox'
     version = '1.2.0'
