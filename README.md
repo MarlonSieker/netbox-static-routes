@@ -4,9 +4,9 @@ Display static routes in Netbox
 
 ### Install the Plugin
 
-To install the Plugin clone the git repository and use following command in the right directory:
+To install the Plugin just download it from the pip library:
 ```
-pip install .
+pip install netbox-static-routes-communities
 ```
 
 ### Migrate the database
@@ -20,7 +20,7 @@ pip install .
 
 Now you have to include the Plugin to Netbox. Add following to your configuration file:
 ```
-PLUGINS = ['netbox_static_routes']
+PLUGINS = ['netbox_static_routes_communities']
 ```
 
 And restart the services:
