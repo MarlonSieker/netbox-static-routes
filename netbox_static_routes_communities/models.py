@@ -75,7 +75,7 @@ class StaticRoute(NetBoxModel):
         return f"{self.target}"
 
     def get_absolute_url(self):
-        return reverse('plugins:netbox_static_routes:staticroute', args=[self.pk])
+        return reverse('plugins:netbox_static_routes_communities:staticroute', args=[self.pk])
 
 class Community(NetBoxModel):
     community = models.TextField(
@@ -99,4 +99,4 @@ class Community(NetBoxModel):
         return str(self.community)
 
     def get_absolute_url(self):
-        return reverse('plugins:netbox_static_routes:community', args=[self.pk])
+        return reverse('plugins:netbox_static_routes_communities:community', args=[self.pk])

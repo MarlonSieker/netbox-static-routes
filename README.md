@@ -12,7 +12,6 @@ pip install netbox-static-routes-communities
 ### Migrate the database
 
 ```
-./manage.py makemigrations netbox_static_routes
 ./manage.py migrate
 ```
 

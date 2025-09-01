@@ -31,12 +31,12 @@ class StaticRouteImportView(generic.BulkImportView):
 
 @register_model_view(Device, name="static-routes", path="static-routes")
 class DeviceStaticRouteView(PermissionRequiredMixin, View):
-    permission_required = "netbox_static_routes.view_staticroute"
-    template_name = "netbox_static_routes/device_static_routes.html"
+    permission_required = "netbox_static_routes_communities.view_staticroute"
+    template_name = "netbox_static_routes_communities/device_static_routes.html"
     tab = ViewTab(
         label="Static Routes",
         badge=lambda obj: StaticRoute.objects.filter(device=obj).count(),
-        permission="netbox_static_routes.view_staticroute",
+        permission="netbox_static_routes_communities.view_staticroute",
         visible=lambda obj: StaticRoute.objects.filter(device=obj).exists(),
     )
 

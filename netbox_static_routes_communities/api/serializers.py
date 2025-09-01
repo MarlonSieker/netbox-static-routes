@@ -2,7 +2,7 @@ from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ipam.models import IPAddress, Prefix, Aggregate
 from dcim.models import Device
-from netbox_static_routes.models import StaticRoute, Community
+from netbox_static_routes_communities.models import StaticRoute, Community
 
 # Nested Serializers für Beziehungen
 class NestedDeviceSerializer(WritableNestedSerializer):
@@ -46,7 +46,7 @@ class TargetField(serializers.Field):
 
 class StaticRouteSerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='plugins-api:netbox_static_routes-api:staticroute-detail'
+        view_name='plugins-api:netbox_static_routes_communities-api:staticroute-detail'
     )
 
     device = NestedDeviceSerializer()
@@ -66,7 +66,7 @@ class StaticRouteSerializer(NetBoxModelSerializer):
 
 class CommunitySerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='plugins-api:netbox_static_routes-api:community-detail'
+        view_name='plugins-api:netbox_static_routes_communities-api:community-detail'
     )
 
     class Meta:
