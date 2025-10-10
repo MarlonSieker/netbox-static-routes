@@ -2,7 +2,7 @@ from netbox.views import generic
 from . import filtersets, forms, models, tables, import_forms
 from utilities.views import ViewTab, register_model_view
 from dcim.models import Device
-from ipam.models import Prefix
+from ipam.models import Prefix, Aggregate
 from django.shortcuts import render, get_object_or_404
 from .models import StaticRoute, Community
 from .tables import StaticRouteTable, CommunityTable
@@ -91,6 +91,45 @@ class PrefixRoutedByView(PermissionRequiredMixin, View):
             self.template_name,
             {
                 "object": prefix,
+                "routes_table": table,
+                "tab": self.tab,
+            },
+        )
+
+@register_model_view(Aggregate, name="routed-by", path="routed-by")
+class AggregateRoutedByView(PermissionRequiredMixin, View):
+    permission_required = "netbox_static_routes_communities.view_staticroute"
+    template_name = "netbox_static_routes_communities/aggregate_routed_by.html"
+
+    tab = ViewTab(
+        label="Routed by",
+        badge=lambda obj: StaticRoute.objects.filter(
+            target_type=ContentType.objects.get_for_model(obj.__class__),
+            target_id=obj.pk
+        ).count(),
+        permission="netbox_static_routes_communities.view_staticroute",
+        visible=lambda obj: StaticRoute.objects.filter(
+            target_type=ContentType.objects.get_for_model(obj.__class__),
+            target_id=obj.pk
+        ).exists(),
+    )
+
+    def get(self, request, pk):
+        aggregate = get_object_or_404(Aggregate, pk=pk)
+        ct = ContentType.objects.get_for_model(Aggregate)
+
+        routes = StaticRoute.objects.filter(
+            target_type=ct,
+            target_id=aggregate.pk
+        ).select_related("device")
+
+        table = StaticRouteTable(routes, user=request.user)
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "object": aggregate,
                 "routes_table": table,
                 "tab": self.tab,
             },
